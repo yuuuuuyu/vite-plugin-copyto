@@ -1,11 +1,11 @@
 import { defineConfig } from "vite"
 import path from "path"
 import dts from "vite-plugin-dts"
+import { basename, join, resolve, dirname } from "path"
+import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 // 测试插件
 import vitePluginCopyto from "./src/index"
-
-import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 export default defineConfig({
   plugins: [
@@ -15,11 +15,12 @@ export default defineConfig({
       tsConfigFilePath: "./tsconfig.json",
     }),
     nodePolyfills(),
-
     vitePluginCopyto({
-      source: ["dist"],
+      base: "dist",
+      source: "./",
       dest: "dist-copy",
-      usePackageName: false,
+      root: path.resolve(__dirname),
+      enforce: "post",
     }),
   ],
   build: {
@@ -29,12 +30,13 @@ export default defineConfig({
       fileName: format => `vite-plugin-copyto.${format}.js`,
     },
     rollupOptions: {
-      external: ["fs-extra", "ora", "chalk"],
+      external: ["fs-extra", "ora", "chalk", "shelljs"],
       output: {
         globals: {
           "fs-extra": "fs-extra",
           ora: "ora",
           chalk: "chalk",
+          shelljs: "shelljs",
         },
         exports: "named",
       },

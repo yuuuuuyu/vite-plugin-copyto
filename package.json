@@ -1,6 +1,6 @@
 {
     "name": "vite-plugin-copyto",
-    "version": "1.0.0",
+    "version": "1.0.18",
     "private": false,
     "description": "Vite插件 用于构建后复制构建产物到指定目录",
     "main": "./dist/vite-plugin-copyto.umd.js",
@@ -27,7 +27,7 @@
         "vite",
         "build",
         "plugin",
-        "clean"
+        "copyto"
     ],
     "author": "于智勇｜15684187702@163.com",
     "license": "ISC",
@@ -54,6 +54,7 @@
     "peerDependencies": {
         "chalk": "^4.0.0",
         "fs-extra": "^11.2.0",
-        "ora": "^5.0.0"
+        "ora": "^5.0.0",
+        "shelljs": "^0.8.5"
     }
 }
