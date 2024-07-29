@@ -1,6 +1,6 @@
 {
     "name": "vite-plugin-copyto",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "private": false,
     "description": "Vite插件 用于构建后复制构建产物到指定目录",
     "main": "./dist/vite-plugin-copyto.umd.js",

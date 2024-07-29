@@ -1,5 +1,4 @@
 import { defineConfig } from "vite"
-import path from "path"
 import dts from "vite-plugin-dts"
 import { basename, join, resolve, dirname } from "path"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
@@ -19,13 +18,13 @@ export default defineConfig({
       base: "dist",
       source: "./",
       dest: "dist-copy",
-      root: path.resolve(__dirname),
+      root: resolve(__dirname),
       enforce: "post",
     }),
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: resolve(__dirname, "src/index.ts"),
       name: "VitePluginCopyto",
       fileName: format => `vite-plugin-copyto.${format}.js`,
     },
