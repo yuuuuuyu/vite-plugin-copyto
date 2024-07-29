@@ -48,7 +48,7 @@ export type PluginOptions = {
 ### base
 非必须字段，默认值`dist`，如果项目内自定义了构建的输出目录，比如指定了`outDir`，那么需要指定`base`字段。
 ### source
-基于`base`目录，复制`base`下的文件夹到`dest`目录。
+基于`base`目录，复制`base`下的文件夹到`dest`目录。也可以复制指定文件到`dest`目录
 
 注意：目前不支持通配符复制。
 ### dest

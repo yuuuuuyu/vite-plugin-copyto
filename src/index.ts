@@ -1,6 +1,6 @@
 import type { UserConfig } from "vite"
 import fs from "fs-extra"
-import { basename, join, resolve } from "path"
+import { basename, dirname, join } from "path"
 import shell from "shelljs"
 import chalk from "chalk"
 import ora from "ora"
@@ -17,6 +17,7 @@ export default function VitePluginCopyto(options: PluginOptions) {
       )
     )
   }
+
   const folders = typeof source === "string" ? [source] : source
   let outDir: string
   const spinner = ora()
@@ -44,27 +45,30 @@ export default function VitePluginCopyto(options: PluginOptions) {
         const rootName = (root && basename(root)) || basename(process.cwd())
 
         // 进行复制操作
-        folders.forEach(folder => {
-          const sourcePath = join(".", base, folder)
-
-          // 定义目标路径，根据 root 选项决定是否包含项目名称
+        for (const folder of folders) {
+          const sourcePath = join(base, folder) // 源路径
           const targetPath = root
-            ? join(targetDir, folder, rootName)
-            : join(targetDir, folder)
+            ? join(targetDir, folder, rootName) // 包含项目名称的路径
+            : join(targetDir, folder) // 仅目标目录
 
-          // 确保源目录存在
+          // 确保源文件或目录存在
           if (fs.existsSync(sourcePath)) {
-            // 创建目标目录
-            fs.mkdirSync(targetPath, { recursive: true })
-            // 复制文件，确保只复制目录中的内容而不创建额外的层级
-            shell.cp("-r", join(sourcePath, "*"), targetPath)
-            spinner.succeed(`Copied files from ${sourcePath} to ${targetPath}`)
-            spinner.stop()
+            const stat = fs.statSync(sourcePath)
+            if (stat.isDirectory()) {
+              // 创建目标目录
+              fs.mkdirSync(targetPath, { recursive: true })
+              // 直接复制文件夹内容
+              shell.cp("-r", join(sourcePath, "*"), targetPath)
+              spinner.succeed(`Copied folder ${sourcePath} to ${targetPath}`)
+            } else {
+              // 直接复制文件，不创建文件夹
+              shell.cp(sourcePath, targetDir) // 复制到目标目录
+              spinner.succeed(`Copied file ${sourcePath} to ${targetDir}`)
+            }
           } else {
-            spinner.fail(`Source directory does not exist: ${sourcePath}`)
-            spinner.stop()
+            spinner.fail(`Source path does not exist: ${sourcePath}`)
           }
-        })
+        }
       } catch (error: any) {
         spinner.fail("Copyto failed!") // 失败时更新 spinner 状态
         spinner.stop()
