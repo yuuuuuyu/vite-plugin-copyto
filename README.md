@@ -62,10 +62,11 @@ export type PluginOptions = {
 
 ## Example
 ```js
+import { basename } from "path"
 export default defineConfig({
   plugins: [
     VitePluginCopyto({
-        root: resolve(__dirname), // or '../xxxxx'
+        root: basename(__dirname), // or '../xxxxx'
         base: 'dist',
         source: ['es', 'lib', 'types'], // or 'es'
         dest: '../beeboat-plus',
