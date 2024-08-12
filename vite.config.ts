@@ -18,7 +18,7 @@ export default defineConfig({
       base: "dist",
       source: "./",
       dest: "dist-copy",
-      root: resolve(__dirname),
+      root: basename(__dirname),
       enforce: "post",
     }),
   ],
